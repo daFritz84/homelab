@@ -1,0 +1,31 @@
+---
+- hosts: all
+  become: yes
+
+  tasks:
+  - name: Ensure all packages are up-to-date.
+    dnf:
+      name: "*"
+      state: latest
+      
+  - name: Ensure chrony (for time synchronization) is installed.
+    dnf:
+      name: chrony
+      state: present
+
+  - name: Ensure chrony is running.
+    service:
+      name: chronyd
+      state: started
+      enabled: yes
+  
+  - name: Ensure cockpit (for web administration) is installed.
+    dnf:
+      name: cockpit
+      state: present
+  
+  - name: Ensure cockpit is running.
+    service:
+      name: cockpit.socket
+      state: started
+      enabled: yes
