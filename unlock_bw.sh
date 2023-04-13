@@ -1,5 +1,4 @@
 #!/bin/sh
-set -e
 
 # start ssh-agent
 eval `ssh-agent`
