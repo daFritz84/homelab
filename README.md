@@ -3,12 +3,17 @@ scripts and config for my homelab setup
 
 ## Ansible
 
-### Basic ansible installation
+### Basic ansible installation and dependency 
 
 ``` bash
 python3 -m pip install --user ansible
 ```
 See also [Getting Started (latest)](https://docs.ansible.com/ansible/latest/getting_started/index.html)
+
+Install all the dependencies:
+``` bash
+ansible-galaxy install -r requirements.yml
+```
 
 ### Check connectivity
 
@@ -20,20 +25,22 @@ See also [Getting Started (latest)](https://docs.ansible.com/ansible/latest/gett
 
 ### Secret and security management
 
-Ansible vault is used to manage the private ssh keys:
-
-``` bash
-ansible-vault encrypt_string --vault-id <vault-id> <path/to/private/key>
-```
+Bitwarden is used to manage all secrets, and occassionally ansible vault.
 
 StrictHostChecking=no option is used in the inventory file. While this should not be used for _production_ environments, it is considered adequate for a development environment such as a homelab.
+
+#### Using Ansible vault
+
+``` bash
+ansible-vault encrypt_string <secret>
+```
 
 #### Using Bitwarden
 
 Bitwarden can be used to store the vault password. First install the bitwarden CLI via npm:
 
 ``` bash
-sudo apt install npm
+sudo apt install npm jq
 sudo npm install -g @bitwarden/cli
 ```
 
