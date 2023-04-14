@@ -8,25 +8,28 @@
     dnf:
       name: "*"
       state: latest
-      
-  - name: Ensure chrony (for time synchronization) is installed.
+     
+  - name: Install required dnf packages.
     dnf:
-      name: chrony
+      name: "{{ item }}"
       state: present
+    with_items:
+      - chrony
+      - cockpit
+      - python3-pip
 
-  - name: Ensure chrony is running.
-    service:
-      name: chronyd
-      state: started
-      enabled: yes
-  
-  - name: Ensure cockpit (for web administration) is installed.
-    dnf:
-      name: cockpit
+  - name: Install required python packages using pip.
+    pip:
+      name: "{{ item }}"
       state: present
-  
-  - name: Ensure cockpit is running.
+    with_items:
+      - bpytop
+
+  - name: Ensure services are running.
     service:
-      name: cockpit.socket
+      name: "{{ item }}"
       state: started
       enabled: yes
+    with_items:
+      - chronyd
+      - cockpit.socket

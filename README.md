@@ -14,6 +14,7 @@ Install all the dependencies:
 ``` bash
 ansible-galaxy install -r requirements.yml
 ```
+See also [Link](https://docs.ansible.com/ansible/latest/collections_guide/collections_installing.html#collection-requirements-file)
 
 ### Check connectivity
 
@@ -88,3 +89,25 @@ ssh-copy-id -i pub_key username@server_ip
       PATH="$HOME/.local/bin:$PATH"
   fi
   ```
+
+## K3S
+
+Installation is done via the ansible playbook ```k3s.yml``` which uses the role provided by [Link](https://github.com/PyratLabs/ansible-role-k3s). A quickstart guide for a single-node cluster can be found in the same repository at [Link](https://github.com/PyratLabs/ansible-role-k3s/blob/main/documentation/quickstart-single-node.md). However, also a custom role has been added which is partly taken from the _official_ ansible role hosted [here](https://github.com/k3s-io/k3s-ansible) and described [here](https://www.suse.com/c/rancher_blog/deploying-k3s-with-ansible/).
+
+## TODO
+
+* [ ] Add https://github.com/geerlingguy/ansible-for-devops to references
+
+  Maybe this is a good source for devops related stuff. I'm still curious if it is possible to mount a cd image via commandline using Intel AMT and do some kind of automated install.
+
+* [ ] Warnings when running kubectl
+  ``` bash
+  [sseifried@Fafnir ~]$ sudo /usr/local/bin/k3s kubectl get nodes
+  E0414 11:21:35.989211  284439 memcache.go:287] couldn't get resource list for metrics.k8s.io/v1beta1: the server is currently unable to handle the request
+  E0414 11:21:35.997923  284439 memcache.go:121] couldn't get resource list for metrics.k8s.io/v1beta1: the server is currently unable to handle the request
+  E0414 11:21:35.999102  284439 memcache.go:121] couldn't get resource list for metrics.k8s.io/v1beta1: the server is currently unable to handle the request
+  E0414 11:21:36.000215  284439 memcache.go:121] couldn't get resource list for metrics.k8s.io/v1beta1: the server is currently unable to handle the request
+  NAME               STATUS   ROLES                  AGE   VERSION
+  fafnir.fritz.box   Ready    control-plane,master   18h   v1.26.3+k3s1
+  ```
+  See also https://github.com/k3s-io/k3s/issues/7021

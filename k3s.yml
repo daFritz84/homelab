@@ -1,14 +1,10 @@
 ---
 - name: Install k3s on Rocky Linux
-  hosts: all
-  become: true
+  hosts: fafnir
+  vars:
+    k3s_become: true
+  roles:
+    - { role: k3s/prereq, become: yes }
+    - { role: xanmanning.k3s }
   tasks:
-    - name: Install required packages
-      dnf:
-        name: "{{ item }}"
-        state: present
-      with_items:
-        - curl
 
-    - name: Install k3s
-      shell: curl -sfL https://get.k3s.io | sh -
