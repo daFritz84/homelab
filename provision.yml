@@ -17,6 +17,7 @@
       - chrony
       - cockpit
       - python3-pip
+      - nano
 
   - name: Install required python packages using pip.
     pip:

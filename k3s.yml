@@ -7,4 +7,17 @@
     - { role: k3s/prereq, become: yes }
     - { role: xanmanning.k3s }
   tasks:
+    # k3s documentation explicitely suggests to turn off the firewall
+    # https://docs.k3s.io/advanced#red-hat-enterprise-linux--centos
+    - name: Turn off firewall as per k3s documentation.
+      become: yes
+      service: 
+        name: firewalld
+        state: stopped
+        enabled: false
 
+    - name: Remove firewalld packages
+      become: yes
+      dnf:
+        name: "firewalld*"
+        state: absent
