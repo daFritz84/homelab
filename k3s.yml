@@ -4,17 +4,28 @@
   vars:
     k3s_become: true
   roles:
-    - { role: k3s/prereq, become: yes }
-    - { role: xanmanning.k3s }
+    - role: k3s/prereq 
+      become: yes
+    - role: xanmanning.k3s
+      vars:
+        k3s_server:
+          bind-address: "{{ ansible_host }}" 
+      
   tasks:
+    - name: Populate service facts
+      service_facts:
+
     # k3s documentation explicitely suggests to turn off the firewall
     # https://docs.k3s.io/advanced#red-hat-enterprise-linux--centos
     - name: Turn off firewall as per k3s documentation.
+      when: 
+        - "'firewalld' in ansible_facts.services.keys()"
+        - ansible_facts.services["firewalld"].state == 'running'
       become: yes
       service: 
         name: firewalld
         state: stopped
-        enabled: false
+        enabled: no
 
     - name: Remove firewalld packages
       become: yes
